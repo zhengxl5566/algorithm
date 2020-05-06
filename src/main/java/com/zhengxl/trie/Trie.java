@@ -5,38 +5,30 @@ package com.zhengxl.trie;
  * @projectName:algorithm
  * @see:com.zhengxl.trie
  * @author:郑晓龙
- * @createTime:2020/5/6 8:58
+ * @createTime:2020/5/6 10:31
  * @version:1.0
  */
 public class Trie {
-    private TrieNode root = new TrieNode('/');
-
-    public void insert(char[] text) {
-        TrieNode p = root;
-        for (int i = 0; i < text.length; i++) {
-            int index = text[i] - 'a';
-            if (p.children[index] == null) {
-                p.children[index] = new TrieNode(text[i]);
+    public TrieNode root = new TrieNode('/');
+    public void insert(String keyWord){
+        TrieNode current = root;
+        for (int i = 0; i < keyWord.length(); i++) {
+            char c = keyWord.charAt(i);
+            if(!current.children.containsKey(c)){
+                current.children.put(c,new TrieNode());
             }
-            p = p.children[index];
+            current = current.children.get(c);
         }
-        p.isEndingChar = true;
+        current.isEndingChar = true;
     }
-
-    public boolean find(char[] text) {
-        TrieNode p = root;
-        for (int i = 0; i < text.length; i++) {
-            int index = text[i] - 'a';
-            if (p.children[index] == null) {
+    public boolean find(String keyWord){
+        TrieNode current = root;
+        for (int i = 0; i < keyWord.length(); i++) {
+            if(!current.children.containsKey(keyWord.charAt(i))){
                 return false;
             }
-            p = p.children[index];
+            current = current.children.get(keyWord.charAt(i));
         }
-
-        if (p.isEndingChar) {
-            return true;
-        } else {
-            return false;
-        }
+        return current.isEndingChar;
     }
 }

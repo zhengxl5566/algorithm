@@ -8,16 +8,18 @@ import org.junit.Test;
  * @projectName:algorithm
  * @see:com.zhengxl.trie
  * @author:郑晓龙
- * @createTime:2020/5/6 9:36
+ * @createTime:2020/5/6 11:30
  * @version:1.0
  */
-public class TrieTest {
+public class SimpleTrieTest {
     @Test
-    public void trieTest(){
+    public void test(){
         Trie t = new Trie();
-        t.insert(new char[]{'a','b','c','d'});
-        t.insert(new char[]{'a','b','c','e'});
-        boolean b = t.find(new char[]{'a', 'b', 'c','d'});
+        t.insert("中华人民共和国");
+        t.insert("中国");
+        t.insert("中国人");
+        t.insert("我的祖国");
+        boolean b = t.find("我的祖国");
 
         Assert.assertTrue(b);
     }
