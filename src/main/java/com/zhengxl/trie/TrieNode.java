@@ -20,13 +20,6 @@ public class TrieNode {
         this.endingChar = false;
     }
 
-    public TrieNode(char data) {
-        Map<Character, TrieNode> newNode = new HashMap<>();
-        newNode.put(data,new TrieNode());
-        this.children = newNode;
-        this.endingChar = false;
-    }
-
     public boolean isEndingChar() {
         return endingChar;
     }

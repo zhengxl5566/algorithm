@@ -9,7 +9,11 @@ package com.zhengxl.trie;
  * @version:1.0
  */
 public class SimpleTrie {
-    private SimpleTrieNode root = new SimpleTrieNode('/');
+    private SimpleTrieNode root;
+
+    public SimpleTrie() {
+        this.root = new SimpleTrieNode('/');;
+    }
 
     public void insert(char[] text) {
         SimpleTrieNode p = root;

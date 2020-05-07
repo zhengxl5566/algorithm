@@ -1,5 +1,10 @@
 package com.zhengxl.trie;
 
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @description:Trie树
  * @projectName:algorithm
@@ -12,30 +17,51 @@ public class Trie {
     private TrieNode root;
 
     public Trie() {
-        this.root = new TrieNode('/');
+        this.root = new TrieNode();
     }
 
-    public void insert(String keyWord){
+    public TrieNode getRoot() {
+        return root;
+    }
+
+    /**
+     * @param keyWord 要插入的关键词
+     * @return void
+     * @description 将一个关键词插入到Trie树
+     * @author 郑晓龙
+     * @createTime 2020/5/7 10:07
+     **/
+    public void insert(String keyWord) {
+        if (keyWord == null || keyWord.length() == 0) {
+            return;
+        }
         TrieNode current = root;
         char[] chars = keyWord.toCharArray();
         for (char c : chars) {
             // 不包含该字符就构造一个节点并插入
-            if(!current.children.containsKey(c)){
-                current.children.put(c,new TrieNode());
+            if (!current.children.containsKey(c)) {
+                current.children.put(c, new TrieNode());
             }
-            // 包含该字符就继续往下遍历
+            // 游标指向子节点
             current = current.children.get(c);
         }
         // 插入完成之后将该词的最后一个字符设置为结束节点
         current.setEndingChar(true);
     }
 
-    public boolean find(String keyWord){
+    /**
+     * @param keyWord 要查询的关键字
+     * @return boolean
+     * @description 查询某个关键字是否存在
+     * @author 郑晓龙
+     * @createTime 2020/5/7 10:01
+     **/
+    public boolean contains(String keyWord) {
         TrieNode current = root;
         char[] chars = keyWord.toCharArray();
         for (char c : chars) {
             // 不包含该字符直接结束，返回false
-            if(!current.children.containsKey(c)){
+            if (!current.children.containsKey(c)) {
                 return false;
             }
             // 包含该字符就继续往下遍历
@@ -43,5 +69,55 @@ public class Trie {
         }
         // 全词匹配，是结束节点才返回true
         return current.isEndingChar();
+    }
+
+    /**
+     * @param text 需要替换敏感词的字符串
+     * @return java.lang.String
+     * @description 将字符串中的敏感词替换为 ‘*’
+     * @author 郑晓龙
+     * @createTime 2020/5/7 10:16
+     **/
+    public String replaceSensitiveWordWithStar(String text) {
+
+        return "";
+    }
+
+    /**
+     * @param preWord
+     * @return java.util.List<java.lang.String>
+     * @description 根据前缀模糊匹配
+     * @author 郑晓龙
+     * @createTime 2020/5/7 10:15
+     **/
+    public List<String> prefixMatching(String preWord) {
+        List<String> resList = new ArrayList<>();
+        StringBuilder sb = new StringBuilder(preWord);
+        TrieNode current = root;
+        char[] chars = preWord.toCharArray();
+        for (char c : chars) {
+            if (!current.children.containsKey(c)) {
+                return resList;
+            }
+            current = current.children.get(c);
+        }
+        // 深度优先遍历
+        dfs(current, sb, resList);
+
+        return resList;
+    }
+
+    public void dfs(TrieNode current, StringBuilder word, List<String> resList) {
+        if (current.isEndingChar()) {
+            resList.add(word.toString());
+            if (current.children.size() <= 0) {
+                return;
+            }
+        }
+        for (Map.Entry<Character, TrieNode> entry : current.children.entrySet()) {
+            word.append(entry.getKey());
+            dfs(entry.getValue(),word,resList);
+            word.delete(word.length()-1,word.length());
+        }
     }
 }

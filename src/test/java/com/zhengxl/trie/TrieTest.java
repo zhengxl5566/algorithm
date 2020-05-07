@@ -15,12 +15,12 @@ public class TrieTest {
     @Test
     public void test(){
         Trie t = new Trie();
-        t.insert("中华人民共和国");
-        t.insert("中国");
+        t.insert("中华民族");
+        t.insert("中华民国");
+        t.insert("中国队");
         t.insert("中国人");
-        t.insert("我的祖国");
-        Assert.assertTrue(t.find("我的祖国"));
-        Assert.assertTrue(t.find("中国"));
-        Assert.assertTrue(t.find("中国人"));
+        Assert.assertTrue(t.contains("中国队"));
+        Assert.assertTrue(t.contains("中国人"));
+        System.out.println(t.prefixMatching("中"));
     }
 }
