@@ -20,10 +20,6 @@ public class Trie {
         this.root = new TrieNode();
     }
 
-    public TrieNode getRoot() {
-        return root;
-    }
-
     /**
      * @param keyWord 要插入的关键词
      * @return void
@@ -64,7 +60,6 @@ public class Trie {
             if (!current.children.containsKey(c)) {
                 return false;
             }
-            // 包含该字符就继续往下遍历
             current = current.children.get(c);
         }
         // 全词匹配，是结束节点才返回true
@@ -78,9 +73,34 @@ public class Trie {
      * @author 郑晓龙
      * @createTime 2020/5/7 10:16
      **/
-    public String replaceSensitiveWordWithStar(String text) {
+    public String replaceSensitiveWordsWithStar(String text) {
+        char[] chars = text.toCharArray();
+        TrieNode current = root;
+        StringBuilder sensitiveWord = new StringBuilder();
+        for (char c : chars) {
+            if (!current.children.containsKey(c)) {
+                continue;
+            }
 
-        return "";
+            // 非结束节点，记录敏感字符并将游标指向子节点
+            if (!current.isEndingChar()) {
+                sensitiveWord.append(c);
+                current = current.children.get(c);
+            }
+            // 是结束节点，替换敏感词为*
+            if (current.isEndingChar()) {
+                StringBuilder stars = new StringBuilder();
+                for (int i = 0; i < sensitiveWord.length(); i++) {
+                    stars.append("*");
+                }
+                text = text.replaceAll(sensitiveWord.toString(), stars.toString());
+                // 匹配完一个敏感词后游标回到root，继续匹配
+                current = root;
+                sensitiveWord.delete(0,sensitiveWord.length());
+            }
+
+        }
+        return text;
     }
 
     /**
@@ -107,7 +127,16 @@ public class Trie {
         return resList;
     }
 
-    public void dfs(TrieNode current, StringBuilder word, List<String> resList) {
+    /**
+     * @param current 当前节点引用
+     * @param word    匹配到的词
+     * @param resList 需要返回的结果列表
+     * @return void
+     * @description 深度优先遍历Trie树
+     * @author 郑晓龙
+     * @createTime 2020/5/7 16:49
+     **/
+    private void dfs(TrieNode current, StringBuilder word, List<String> resList) {
         if (current.isEndingChar()) {
             resList.add(word.toString());
             if (current.children.size() <= 0) {
@@ -116,8 +145,8 @@ public class Trie {
         }
         for (Map.Entry<Character, TrieNode> entry : current.children.entrySet()) {
             word.append(entry.getKey());
-            dfs(entry.getValue(),word,resList);
-            word.delete(word.length()-1,word.length());
+            dfs(entry.getValue(), word, resList);
+            word.delete(word.length() - 1, word.length());
         }
     }
 }

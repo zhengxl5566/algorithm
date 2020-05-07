@@ -22,5 +22,6 @@ public class TrieTest {
         Assert.assertTrue(t.contains("中国队"));
         Assert.assertTrue(t.contains("中国人"));
         System.out.println(t.prefixMatching("中"));
+        System.out.println(t.replaceSensitiveWordsWithStar("我是中国人我骄傲，中国队加油"));
     }
 }
