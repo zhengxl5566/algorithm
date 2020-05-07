@@ -11,7 +11,7 @@ import org.junit.Test;
  * @createTime:2020/5/6 11:30
  * @version:1.0
  */
-public class SimpleTrieTest {
+public class TrieTest {
     @Test
     public void test(){
         Trie t = new Trie();
@@ -19,8 +19,8 @@ public class SimpleTrieTest {
         t.insert("中国");
         t.insert("中国人");
         t.insert("我的祖国");
-        boolean b = t.find("我的祖国");
-
-        Assert.assertTrue(b);
+        Assert.assertTrue(t.find("我的祖国"));
+        Assert.assertTrue(t.find("中国"));
+        Assert.assertTrue(t.find("中国人"));
     }
 }

@@ -1,7 +1,7 @@
 package com.zhengxl.trie;
 
 /**
- * @description:
+ * @description:Trie树
  * @projectName:algorithm
  * @see:com.zhengxl.trie
  * @author:郑晓龙
@@ -9,26 +9,39 @@ package com.zhengxl.trie;
  * @version:1.0
  */
 public class Trie {
-    public TrieNode root = new TrieNode('/');
+    private TrieNode root;
+
+    public Trie() {
+        this.root = new TrieNode('/');
+    }
+
     public void insert(String keyWord){
         TrieNode current = root;
-        for (int i = 0; i < keyWord.length(); i++) {
-            char c = keyWord.charAt(i);
+        char[] chars = keyWord.toCharArray();
+        for (char c : chars) {
+            // 不包含该字符就构造一个节点并插入
             if(!current.children.containsKey(c)){
                 current.children.put(c,new TrieNode());
             }
+            // 包含该字符就继续往下遍历
             current = current.children.get(c);
         }
-        current.isEndingChar = true;
+        // 插入完成之后将该词的最后一个字符设置为结束节点
+        current.setEndingChar(true);
     }
+
     public boolean find(String keyWord){
         TrieNode current = root;
-        for (int i = 0; i < keyWord.length(); i++) {
-            if(!current.children.containsKey(keyWord.charAt(i))){
+        char[] chars = keyWord.toCharArray();
+        for (char c : chars) {
+            // 不包含该字符直接结束，返回false
+            if(!current.children.containsKey(c)){
                 return false;
             }
-            current = current.children.get(keyWord.charAt(i));
+            // 包含该字符就继续往下遍历
+            current = current.children.get(c);
         }
-        return current.isEndingChar;
+        // 全词匹配，是结束节点才返回true
+        return current.isEndingChar();
     }
 }

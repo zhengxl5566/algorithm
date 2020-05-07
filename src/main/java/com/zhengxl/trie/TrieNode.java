@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @description:
+ * @description:Trie树节点
  * @projectName:algorithm
  * @see:com.zhengxl.trie
  * @author:郑晓龙
@@ -12,18 +12,28 @@ import java.util.Map;
  * @version:1.0
  */
 public class TrieNode {
-    public boolean isEndingChar;
+    private boolean endingChar;
     public Map<Character, TrieNode> children;
+
+    public TrieNode() {
+        this.children = new HashMap<>();
+        this.endingChar = false;
+    }
 
     public TrieNode(char data) {
         Map<Character, TrieNode> newNode = new HashMap<>();
         newNode.put(data,new TrieNode());
         this.children = newNode;
-        this.isEndingChar = false;
+        this.endingChar = false;
     }
 
-    public TrieNode() {
-        this.children = new HashMap<>();
-        this.isEndingChar = false;
+    public boolean isEndingChar() {
+        return endingChar;
     }
+
+    public void setEndingChar(boolean endingChar) {
+        this.endingChar = endingChar;
+    }
+
+
 }
