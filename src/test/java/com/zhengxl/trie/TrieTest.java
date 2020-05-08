@@ -19,9 +19,15 @@ public class TrieTest {
         t.insert("中华民国");
         t.insert("中国队");
         t.insert("中国人");
+        t.insert("棒子");
+        t.insert("骄傲");
+        t.insert("hello，world！");
+        t.insert("hello，friend！");
         Assert.assertTrue(t.contains("中国队"));
         Assert.assertTrue(t.contains("中国人"));
         System.out.println(t.prefixMatching("中"));
-        System.out.println(t.replaceSensitiveWordsWithStar("我是中国人我骄傲，中国队加油"));
+        System.out.println(t.prefixMatching("h"));
+        System.out.println(t.replaceSensitiveWordsWithStar("我是中国人我骄傲"));
+        System.out.println(t.replaceSensitiveWordsWithStar("狗熊掰棒子都是棒子货"));
     }
 }

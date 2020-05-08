@@ -46,9 +46,9 @@ public class Trie {
     }
 
     /**
-     * @param keyWord 要查询的关键字
+     * @param keyWord 要查询的关键词
      * @return boolean
-     * @description 查询某个关键字是否存在
+     * @description 查询某个关键词是否存在
      * @author 郑晓龙
      * @createTime 2020/5/7 10:01
      **/
@@ -112,7 +112,7 @@ public class Trie {
      **/
     public List<String> prefixMatching(String preWord) {
         List<String> resList = new ArrayList<>();
-        StringBuilder sb = new StringBuilder(preWord);
+        StringBuilder wordStringBuilder = new StringBuilder(preWord);
         TrieNode current = root;
         char[] chars = preWord.toCharArray();
         for (char c : chars) {
@@ -122,7 +122,7 @@ public class Trie {
             current = current.children.get(c);
         }
         // 深度优先遍历
-        dfs(current, sb, resList);
+        dfs(current, wordStringBuilder, resList);
 
         return resList;
     }
@@ -146,6 +146,7 @@ public class Trie {
         for (Map.Entry<Character, TrieNode> entry : current.children.entrySet()) {
             word.append(entry.getKey());
             dfs(entry.getValue(), word, resList);
+            // DFS之后回到父级，删除子节点的字符
             word.delete(word.length() - 1, word.length());
         }
     }
