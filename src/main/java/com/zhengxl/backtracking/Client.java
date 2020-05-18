@@ -10,6 +10,10 @@ package com.zhengxl.backtracking;
  */
 public class Client {
     public static void main(String[] args) {
-        new EightQueen();
+//        new EightQueen();
+        Knapsack knapsack = new Knapsack();
+        int[] items = {1,5,3,9,4,6,7,8};
+        knapsack.func(0,0,items,20);
+        System.out.println(knapsack.maxW);
     }
 }

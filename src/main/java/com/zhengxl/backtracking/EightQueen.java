@@ -40,7 +40,7 @@ public class EightQueen {
             if (leftUp >= 0 && result[rowNumber] == leftUp) {
                 return false;
             }
-            if (leftUp <= 8 && result[rowNumber] == rightUp) {
+            if (rightUp <= 8 && result[rowNumber] == rightUp) {
                 return false;
             }
             leftUp--;
