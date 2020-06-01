@@ -11,8 +11,11 @@ package com.zhengxl.matchstring;
 public class Client {
     public static void main(String[] args) {
         Bm bm = new Bm();
-        char[] a = {'a','b','a','c','d'};
-        char[] b = {'a','c','d'};
-        System.out.println(bm.bm(a,5,b,3));
+        char[] a = {'c','a','b','c','a','b'};
+        char[] b = {'b','c','a'};
+        int[] suffix = new int[b.length];
+        boolean[] prefix = new boolean[b.length];
+
+        System.out.println(bm.bm(a,a.length,b,b.length));
     }
 }
