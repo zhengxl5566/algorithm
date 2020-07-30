@@ -28,5 +28,4 @@ public class TrieNode {
         this.endingChar = endingChar;
     }
 
-
 }
