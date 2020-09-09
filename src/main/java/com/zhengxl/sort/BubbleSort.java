@@ -8,7 +8,7 @@ package com.zhengxl.sort;
  * @createTime:2020/9/9 10:35
  * @version:1.0
  */
-public class BubbleSort {
+public class BubbleSort implements Sort {
 
     /**
      * @param array
@@ -17,7 +17,8 @@ public class BubbleSort {
      * @author 郑晓龙
      * @createTime 2020/9/9 11:46
      **/
-    public int[] sort(int[] array) {
+    @Override
+    public int[] sortDesc(int[] array) {
         if (array == null) {
             return null;
         }

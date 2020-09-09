@@ -8,9 +8,10 @@ package com.zhengxl.sort;
  * @createTime:2020/9/9 10:35
  * @version:1.0
  */
-public class InsertSort {
+public class InsertSort implements Sort{
 
-    public int[] sort(int[] array){
+    @Override
+    public int[] sortDesc(int[] array) {
         if (array == null) {
             return null;
         }
@@ -18,9 +19,18 @@ public class InsertSort {
         if (size <= 1) {
             return array;
         }
-
-
-
+        for (int i = 1; i < size; i++) {
+            int value = array[i];
+            int j = i - 1;
+            for (; j >= 0; j--) {
+                if (array[j] > value) {
+                    array[j + 1] = array[j];
+                } else {
+                    break;
+                }
+            }
+            array[j + 1] = value;
+        }
         return array;
     }
 }

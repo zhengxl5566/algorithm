@@ -12,11 +12,12 @@ import java.util.stream.Stream;
  */
 public class Client {
     public static void main(String[] args) {
-        int[] array = {};
-        BubbleSort bubbleSort = new BubbleSort();
-        int[] sort = bubbleSort.sort(array);
-        for (int i = 0; i < sort.length; i++) {
-            System.out.println(sort[i]);
+        int[] array = {1,5,4,3,2};
+        Sort sort = new SelectSort();
+        int[] sortResult = sort.sortDesc(array);
+
+        for (int i = 0; i < sortResult.length; i++) {
+            System.out.println(sortResult[i]);
         }
     }
 }
