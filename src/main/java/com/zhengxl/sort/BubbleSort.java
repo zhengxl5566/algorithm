@@ -18,13 +18,13 @@ public class BubbleSort implements Sort {
      * @createTime 2020/9/9 11:46
      **/
     @Override
-    public int[] sortDesc(int[] array) {
+    public void sortDesc(int[] array) {
         if (array == null) {
-            return null;
+            return;
         }
         int size = array.length;
         if (size <= 1) {
-            return array;
+            return;
         }
         for (int i = 0; i < size; i++) {
             // 是否发生了数据交换的标志位
@@ -42,6 +42,6 @@ public class BubbleSort implements Sort {
                 break;
             }
         }
-        return array;
+        return;
     }
 }

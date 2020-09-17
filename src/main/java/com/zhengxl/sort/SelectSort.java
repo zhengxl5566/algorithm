@@ -10,13 +10,13 @@ package com.zhengxl.sort;
  */
 public class SelectSort implements Sort {
     @Override
-    public int[] sortDesc(int[] array) {
+    public void sortDesc(int[] array) {
         if (array == null) {
-            return null;
+            return;
         }
         int size = array.length;
         if (size <= 1) {
-            return array;
+            return;
         }
         for (int i = 0; i < size - 1; i++) {
             int minIndex = i;
@@ -32,6 +32,6 @@ public class SelectSort implements Sort {
         }
 
 
-        return array;
+        return;
     }
 }

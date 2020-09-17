@@ -16,5 +16,5 @@ public interface Sort {
      * @author 郑晓龙
      * @createTime 2020/9/9 14:09
      **/
-    int[] sortDesc(int[] array);
+    void sortDesc(int[] array);
 }

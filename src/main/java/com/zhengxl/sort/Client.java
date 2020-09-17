@@ -13,11 +13,11 @@ import java.util.stream.Stream;
 public class Client {
     public static void main(String[] args) {
         int[] array = {1,5,4,3,2};
-        Sort sort = new SelectSort();
-        int[] sortResult = sort.sortDesc(array);
+        Sort sort = new MergeSort();
+        sort.sortDesc(array);
 
-        for (int i = 0; i < sortResult.length; i++) {
-            System.out.println(sortResult[i]);
+        for (int i = 0; i < array.length; i++) {
+            System.out.println(array[i]);
         }
     }
 }

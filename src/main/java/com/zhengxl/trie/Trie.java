@@ -2,11 +2,12 @@ package com.zhengxl.trie;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @description:Trie树
+ * @description:使用 HashMap 实现，支持任何字符的 Trie 树
  * @projectName:algorithm
  * @see:com.zhengxl.trie
  * @author:郑晓龙
@@ -20,6 +21,24 @@ public class Trie {
         this.root = new TrieNode();
     }
 
+    public static class TrieNode {
+        private boolean endingChar;
+        public Map<Character, TrieNode> children;
+
+        public TrieNode() {
+            this.children = new HashMap<>();
+            this.endingChar = false;
+        }
+
+        public boolean isEndingChar() {
+            return endingChar;
+        }
+
+        public void setEndingChar(boolean endingChar) {
+            this.endingChar = endingChar;
+        }
+
+    }
     /**
      * @param keyWord 要插入的关键词
      * @return void
