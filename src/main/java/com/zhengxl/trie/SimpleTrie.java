@@ -1,7 +1,7 @@
 package com.zhengxl.trie;
 
 /**
- * @description: 使用数组实现，只支持英文字母的Trie树
+ * @description: 使用数组实现，只支持小写英文字母的Trie树
  * @projectName:algorithm
  * @see:com.zhengxl.trie
  * @author:郑晓龙
@@ -16,12 +16,13 @@ public class SimpleTrie {
     }
 
     public static class SimpleTrieNode {
-        public boolean isEndingChar;
         public char data;
+        public boolean isEndingChar;
         public SimpleTrieNode[] children = new SimpleTrieNode[26];
 
         public SimpleTrieNode(char data) {
             this.data = data;
+            isEndingChar = false;
         }
     }
 
