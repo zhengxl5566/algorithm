@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * @description:
@@ -19,10 +20,12 @@ public class TrieTest {
     @Before
     public void init(){
         t = new Trie();
+        t.insert("中华");
         t.insert("中华民族");
         t.insert("中华民国");
         t.insert("中国队");
         t.insert("中国人");
+        t.insert("中国");
         t.insert("棒子");
         t.insert("骄傲");
         t.insert("hello，world！");
@@ -41,5 +44,13 @@ public class TrieTest {
     public void containsTest(){
         Assert.assertFalse(t.contains("民族"));
         Assert.assertTrue(t.contains("中国人"));
+        Assert.assertTrue(t.contains("中国人民"));
+        Assert.assertTrue(t.contains("中国"));
+    }
+
+    @Test
+    public void checkKeyword(){
+        Set<String> res = t.checkKeyWord("中华民族");
+        System.out.println(res);
     }
 }

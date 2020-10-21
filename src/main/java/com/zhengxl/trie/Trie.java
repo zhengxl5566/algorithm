@@ -1,9 +1,6 @@
 package com.zhengxl.trie;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @description:使用 HashMap 实现，支持任何字符的 Trie 树
@@ -38,6 +35,40 @@ public class Trie {
         }
 
     }
+
+    public Set<String> checkKeyWord(String content) {
+        Set<String> keyWordList = new HashSet<>();
+        char[] chars = content.toCharArray();
+
+        TrieNode current = root;
+        StringBuilder sensitiveWord = new StringBuilder();
+        for (char c : chars) {
+            if (!current.children.containsKey(c)) {
+                current = root;
+                continue;
+            }
+            current = current.children.get(c);
+            // 非结束节点，记录敏感字符
+            sensitiveWord.append(c);
+            // 是结束节点，把敏感词放入结果集
+            if (current.isEndingChar()) {
+                // 是结束节点并且是末尾节点
+                if (current.children.size() <= 0) {
+                    // 匹配完一个敏感词后游标回到root，继续匹配
+                    current = root;
+                    keyWordList.add(sensitiveWord.toString());
+                    sensitiveWord.delete(0, sensitiveWord.length());
+                    continue;
+                }
+                // 不是末尾节点继续循环匹配子节点
+                keyWordList.add(sensitiveWord.toString());
+            }
+
+        }
+
+        return keyWordList;
+    }
+
     /**
      * @param keyWord 要插入的关键词
      * @return void
@@ -114,7 +145,7 @@ public class Trie {
                 text = text.replaceAll(sensitiveWord.toString(), stars.toString());
                 // 匹配完一个敏感词后游标回到root，继续匹配
                 current = root;
-                sensitiveWord.delete(0,sensitiveWord.length());
+                sensitiveWord.delete(0, sensitiveWord.length());
             }
 
         }
