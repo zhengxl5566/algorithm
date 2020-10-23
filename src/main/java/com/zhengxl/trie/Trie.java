@@ -1,5 +1,7 @@
 package com.zhengxl.trie;
 
+import com.sun.deploy.util.StringUtils;
+
 import java.util.*;
 
 /**
@@ -19,7 +21,7 @@ public class Trie {
 
     public static class TrieNode {
         private boolean endingChar;
-        public Map<Character, TrieNode> children;
+        public Map<String, TrieNode> children;
 
         public TrieNode() {
             this.children = new HashMap<>();
@@ -50,6 +52,8 @@ public class Trie {
             current = current.children.get(c);
             // 非结束节点，记录敏感字符
             sensitiveWord.append(c);
+
+
             // 是结束节点，把敏感词放入结果集
             if (current.isEndingChar()) {
                 // 是结束节点并且是末尾节点
@@ -69,29 +73,100 @@ public class Trie {
         return keyWordList;
     }
 
+    public Set<String> checkKeyword2(String content){
+        Set<String> sensitiveWordSet = new HashSet<>();
+        TrieNode current = root;
+        while(true){
+            if(content.length() == 0){
+                return sensitiveWordSet;
+            }
+
+            String chr = content.substring(0,1);
+
+            // 首字符不匹配Trie树
+            if(current.children.get(chr) == null){
+                content = content.substring(1);
+                continue;
+            }
+
+            // 匹配上了
+            int maxLength = getSensitiveWord(content, current, sensitiveWordSet);
+            content = content.substring(maxLength);
+        }
+    }
+
     /**
-     * @param keyWord 要插入的关键词
+     * @param current
+     * @param content
+     * @param keyWordSet
+     * @return java.lang.Long 返回最长的那个关键词的长度
+     * @description
+     * @author 郑晓龙
+     * @createTime 2020/10/21 17:06
+     **/
+    private int getSensitiveWord(String content,TrieNode current,Set<String> sensitiveWordSet) {
+        int maxLength = 0;
+        StringBuilder sensitiveWord = new StringBuilder();
+
+        while(true){
+            String chr = content.substring(0,1);
+            if(current.children.get(chr) == null){
+                break;
+            }
+            current = current.children.get(chr);
+            sensitiveWord.append(chr);
+            if(current.isEndingChar()){
+                String str = sensitiveWord.toString();
+                if(current.children.size() == 0){
+                    sensitiveWordSet.add(str);
+                    Math.max(maxLength,str.length());
+                    break;
+                }
+                // 不是末尾节点继续循环匹配子节点
+                Math.max(maxLength,str.length());
+                sensitiveWordSet.add(str);
+            }
+        }
+
+
+        return maxLength;
+    }
+
+    /**
+     * @param keyword 要插入的关键词
      * @return void
      * @description 将一个关键词插入到Trie树
      * @author 郑晓龙
      * @createTime 2020/5/7 10:07
      **/
-    public void insert(String keyWord) {
-        if (keyWord == null || keyWord.length() == 0) {
+    public void insert(String keyword) {
+        if (keyword == null || keyword.length() == 0) {
+            return;
+        }
+        buildTrie(keyword);
+    }
+
+    private void buildTrie(String keyword) {
+        if (keyword == null || keyword.length() == 0) {
             return;
         }
         TrieNode current = root;
-        char[] chars = keyWord.toCharArray();
-        for (char c : chars) {
-            // 不包含该字符就构造一个节点并插入
-            if (!current.children.containsKey(c)) {
-                current.children.put(c, new TrieNode());
+        while (true) {
+            if (keyword.length() == 0) {
+                break;
             }
-            // 游标指向子节点
-            current = current.children.get(c);
+            String firstStr = keyword.substring(0, 1);
+
+            if (!current.children.containsKey(firstStr)) {
+                current.children.put(firstStr, new TrieNode());
+            }
+            current = current.children.get(firstStr);
+            // 字符往后走一位
+            keyword = keyword.substring(1);
         }
         // 插入完成之后将该词的最后一个字符设置为结束节点
         current.setEndingChar(true);
+
     }
 
     /**
@@ -113,90 +188,5 @@ public class Trie {
         }
         // 全词匹配，是结束节点才返回true
         return current.isEndingChar();
-    }
-
-    /**
-     * @param text 需要替换敏感词的字符串
-     * @return java.lang.String
-     * @description 将字符串中的敏感词替换为 ‘*’
-     * @author 郑晓龙
-     * @createTime 2020/5/7 10:16
-     **/
-    public String replaceSensitiveWordsWithStar(String text) {
-        char[] chars = text.toCharArray();
-        TrieNode current = root;
-        StringBuilder sensitiveWord = new StringBuilder();
-        for (char c : chars) {
-            if (!current.children.containsKey(c)) {
-                continue;
-            }
-
-            // 非结束节点，记录敏感字符并将游标指向子节点
-            if (!current.isEndingChar()) {
-                sensitiveWord.append(c);
-                current = current.children.get(c);
-            }
-            // 是结束节点，替换敏感词为*
-            if (current.isEndingChar()) {
-                StringBuilder stars = new StringBuilder();
-                for (int i = 0; i < sensitiveWord.length(); i++) {
-                    stars.append("*");
-                }
-                text = text.replaceAll(sensitiveWord.toString(), stars.toString());
-                // 匹配完一个敏感词后游标回到root，继续匹配
-                current = root;
-                sensitiveWord.delete(0, sensitiveWord.length());
-            }
-
-        }
-        return text;
-    }
-
-    /**
-     * @param preWord
-     * @return java.util.List<java.lang.String>
-     * @description 根据前缀模糊匹配
-     * @author 郑晓龙
-     * @createTime 2020/5/7 10:15
-     **/
-    public List<String> prefixMatching(String preWord) {
-        List<String> resList = new ArrayList<>();
-        StringBuilder wordStringBuilder = new StringBuilder(preWord);
-        TrieNode current = root;
-        char[] chars = preWord.toCharArray();
-        for (char c : chars) {
-            if (!current.children.containsKey(c)) {
-                return resList;
-            }
-            current = current.children.get(c);
-        }
-        // 深度优先遍历
-        dfs(current, wordStringBuilder, resList);
-
-        return resList;
-    }
-
-    /**
-     * @param current 当前节点引用
-     * @param word    匹配到的词
-     * @param resList 需要返回的结果列表
-     * @return void
-     * @description 深度优先遍历Trie树
-     * @author 郑晓龙
-     * @createTime 2020/5/7 16:49
-     **/
-    private void dfs(TrieNode current, StringBuilder word, List<String> resList) {
-        if (current.isEndingChar()) {
-            resList.add(word.toString());
-            if (current.children.size() <= 0) {
-                return;
-            }
-        }
-        for (Map.Entry<Character, TrieNode> entry : current.children.entrySet()) {
-            word.append(entry.getKey());
-            dfs(entry.getValue(), word, resList);
-            // DFS之后回到父级，删除子节点的字符
-            word.delete(word.length() - 1, word.length());
-        }
     }
 }
