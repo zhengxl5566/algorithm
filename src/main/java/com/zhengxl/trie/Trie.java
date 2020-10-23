@@ -1,8 +1,9 @@
 package com.zhengxl.trie;
 
-import com.sun.deploy.util.StringUtils;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @description:使用 HashMap 实现，支持任何字符的 Trie 树
